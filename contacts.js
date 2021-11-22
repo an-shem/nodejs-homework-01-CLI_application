@@ -6,6 +6,7 @@ const contactsPath = path.join(__dirname, './db/contacts.json');
 // Get all contacts
 async function listContacts() {
   const contacts = await fs.readFile(contactsPath, 'utf8');
+  if (!contacts) return null;
   const contactsParse = JSON.parse(contacts);
   return contactsParse;
 }
@@ -13,7 +14,7 @@ async function listContacts() {
 // Get one contact by id
 async function getContactById(contactId) {
   const contacts = await listContacts();
-  const [contact] = contacts.filter((item) => item.id === contactId);
+  const [contact] = contacts.filter((item) => item.id === Number(contactId));
   if (!contact) return null;
   return contact;
 }
@@ -21,7 +22,7 @@ async function getContactById(contactId) {
 //  Delete one contact by id
 async function removeContact(contactId) {
   const contacts = await listContacts();
-  const indexContact = contacts.findIndex((item) => item.id === contactId);
+  const indexContact = contacts.findIndex((item) => item.id === Number(contactId));
   if (indexContact === -1) return null;
   const removedСontact = contacts[indexContact];
   contacts.splice(indexContact, 1);
@@ -31,9 +32,10 @@ async function removeContact(contactId) {
 
 // Add one contact to list
 async function addContact(name, email, phone) {
+  if (!name || !email || !phone) return null;
   const contacts = await listContacts();
   const newContact = {
-    id: Data.now(),
+    id: Date.now(),
     name,
     email,
     phone,

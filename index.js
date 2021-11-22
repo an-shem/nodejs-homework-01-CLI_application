@@ -1,3 +1,6 @@
+require('colors');
+const contactsOperation = require('./contacts');
+
 const { Command } = require('commander');
 const program = new Command();
 program
@@ -11,23 +14,44 @@ program.parse(process.argv);
 
 const argv = program.opts();
 
-// TODO: рефакторить
-function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
-      // ...
+      const contacts = await contactsOperation.listContacts();
+      if (!contacts) {
+        console.log('NOT FOUND'.red);
+        return;
+      }
+      console.table(contacts);
       break;
 
     case 'get':
-      // ... id
+      const contact = await contactsOperation.getContactById(id);
+      if (!contact) {
+        console.log('CONTACT NOT FOUND'.red);
+        return;
+      }
+      console.table(contact);
       break;
 
     case 'add':
-      // ... name email phone
+      const newContact = await contactsOperation.addContact(name, email, phone);
+      if (!newContact) {
+        console.log('NOT ALL DATA SHOWN'.red);
+        return;
+      }
+      console.log('CONTACT SUCCESSFULLY CREATED'.blue);
+      console.table(newContact);
       break;
 
     case 'remove':
-      // ... id
+      const removedСontact = await contactsOperation.removeContact(id);
+      if (!removedСontact) {
+        console.log('CONTACT NOT FOUND'.red);
+        return;
+      }
+      console.log('CONTACT SUCCESSFULLY REMOVED'.gray);
+      console.table(removedСontact);
       break;
 
     default:
