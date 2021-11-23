@@ -50,7 +50,7 @@ async function invokeAction({ action, id, name, email, phone }) {
         console.log('CONTACT NOT FOUND'.red);
         return;
       }
-      console.log('CONTACT SUCCESSFULLY REMOVED'.gray);
+      console.log('CONTACT SUCCESSFULLY REMOVED'.blue);
       console.table(removedСontact);
       break;
 

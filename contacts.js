@@ -1,7 +1,7 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-const contactsPath = path.join(__dirname, './db/contacts.json');
+const contactsPath = path.join(__dirname, 'db', 'contacts.json');
 
 // Get all contacts
 async function listContacts() {
@@ -14,9 +14,9 @@ async function listContacts() {
 // Get one contact by id
 async function getContactById(contactId) {
   const contacts = await listContacts();
-  const [contact] = contacts.filter((item) => item.id === Number(contactId));
-  if (!contact) return null;
-  return contact;
+  const contactById = contacts.find((item) => item.id === Number(contactId));
+  if (!contactById) return null;
+  return contactById;
 }
 
 //  Delete one contact by id
